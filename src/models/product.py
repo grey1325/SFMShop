@@ -22,6 +22,12 @@ class Product:
             raise ValidationError("Цена не может быть отрицательной")
         self.price = price
 
+    def apply_discount(self, percent):
+        if 0 < percent < 100:
+            discount_amount = (percent * self.price) / 100
+            self.price -= discount_amount
+        return self.price
+
 
     def __str__(self):
         return f"Товар: {self.name}, Цена: {self.price} руб., Количество: {self.quantity}"
