@@ -37,6 +37,14 @@ class Product:
         self.quantity += amount
         return self.quantity
 
+    def calculate_shipping(self):
+        if self.price <= 5000:
+            delivery_size = 0.1
+            delivery_cost = self.price * delivery_size
+            return delivery_cost
+        return 0
+
+
 
     def __str__(self):
         return f"Товар: {self.name}, Цена: {self.price} руб., Количество: {self.quantity}"
