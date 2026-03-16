@@ -22,6 +22,10 @@ class Product:
             raise ValidationError("Цена не может быть отрицательной")
         self.price = price
 
+    def get_category(self):
+        return self.name
+
+
 
     def __str__(self):
         return f"Товар: {self.name}, Цена: {self.price} руб., Количество: {self.quantity}"
