@@ -64,6 +64,23 @@ async def test_create_order_success(order_service_mocks, user, product, order):
 
 
 @pytest.mark.asyncio
+async def test_create_order_insufficient_stock(order_service_mocks, user, product):
+    service, order_repo, user_repo, product_repo = order_service_mocks
+    user_repo.get_by_id.return_value = user
+    product.stock = 1
+    product_repo.get_by_ids.return_value = [product]
+    order_create = OrderCreate(
+        user_id=user.id, items=[OrderItemCreate(product_id=product.id, quantity=2)]
+    )
+    with pytest.raises(ValueError, match=f"Недостаточно товара {product.id} в наличии"):
+        await service.create_order(order_create)
+    user_repo.get_by_id.assert_awaited_once_with(user.id)
+    product_repo.get_by_ids.assert_awaited_once_with([product.id])
+    order_repo.create_order.assert_not_awaited()
+    order_repo.create_order_item.assert_not_awaited()
+
+
+@pytest.mark.asyncio
 async def test_create_order_multiple_products(
     order_service_mocks, user, products, order
 ):

@@ -24,7 +24,6 @@ class OrderService:
             raise ValueError(f"Пользователь {order_data.user_id} не найден")
         product_ids = [item.product_id for item in order_data.items]
         products = await self.product_repo.get_by_ids(product_ids)
-        print(products)
         products_map = {db_product.id: db_product for db_product in products}
         total = 0
         for item in order_data.items:
