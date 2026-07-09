@@ -1,5 +1,5 @@
 # docker/Dockerfile
-FROM python:3.11-slim as builder
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
@@ -10,11 +10,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
-FROM python:3.11-slim
-# Копировать код приложения
-WORKDIR /app
 
-COPY --from=builder /app /app
 # Открыть порт
 EXPOSE 8000
 
