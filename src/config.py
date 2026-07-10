@@ -4,6 +4,8 @@ import os
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL is None:
+    raise RuntimeError("DATABASE_URL environment variable is not set")
 ASYNC_DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
 SECRET_KEY = os.getenv("SECRET_KEY")
 REDIS_URL = os.getenv("REDIS_URL")

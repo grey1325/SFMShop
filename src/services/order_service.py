@@ -3,6 +3,7 @@ from src.database.repositories.product_repository import ProductRepository
 from src.database.repositories.user_repository import UserRepository
 from src.api.schemas import OrderCreate, OrderStatus
 from src.database.repositories.order_repository import OrderRepository
+from decimal import Decimal
 
 
 class OrderService:
@@ -25,7 +26,7 @@ class OrderService:
         product_ids = [item.product_id for item in order_data.items]
         products = await self.product_repo.get_by_ids(product_ids)
         products_map = {db_product.id: db_product for db_product in products}
-        total = 0
+        total = Decimal("0")
         for item in order_data.items:
             product = products_map.get(item.product_id)
             if product is None:

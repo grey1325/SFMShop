@@ -3,13 +3,14 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.api.schemas import OrderStatus
 from src.database.models import Order, OrderItem
+from decimal import Decimal
 
 
 class OrderRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_order(self, user_id: int, total: float) -> Order:
+    async def create_order(self, user_id: int, total: Decimal) -> Order:
         """Создание заказа."""
         order = Order(user_id=user_id, total=total)
         self.session.add(order)
