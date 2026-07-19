@@ -27,7 +27,6 @@ class FakeProductService:
             "name": product.name,
             "price": product.price,
             "stock": product.stock,
-            "category": product.category,
         }
 
     async def update_product(self, product_id, product):
@@ -83,16 +82,10 @@ def test_create_product(client):
     app.dependency_overrides[get_product_service] = override_product_service
     response = client.post(
         "/products/",
-        json={"name": "Phone", "price": 100.0, "stock": 10, "category": "Phone"},
+        json={"name": "Phone", "price": 100.0, "stock": 10},
     )
     assert response.status_code == 200
-    assert response.json() == {
-        "id": 1,
-        "name": "Phone",
-        "price": 100.0,
-        "stock": 10,
-        "category": "Phone",
-    }
+    assert response.json() == {"id": 1, "name": "Phone", "price": 100.0, "stock": 10}
 
 
 def test_update_product_succes(client):

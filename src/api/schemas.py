@@ -1,7 +1,6 @@
 import datetime
 from enum import Enum
 import html
-import re
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -19,19 +18,11 @@ class ProductCreate(BaseModel):
         gt=0, le=10_000_000, description="Цена товара (должна быть больше 0)"
     )
     stock: int = Field(ge=0, le=100_000)
-    category: str = Field(min_length=1, max_length=100)
 
     @field_validator("name")
     @classmethod
     def sanitize_name(cls, v: str) -> str:
         return html.escape(v.strip())
-
-    @field_validator("category")
-    @classmethod
-    def sanitize_category(cls, value: str) -> str:
-        if not re.match(r"^[A-Za-zА-Яа-я0-9\s-]+$", value):
-            raise ValueError("Недопустимые символы в категории")
-        return value
 
 
 class ProductUpdate(BaseModel):
